@@ -1,4 +1,5 @@
-import { compose, system, variant } from '@styled-system/core';
+import { compose, system } from '@styled-system/core';
+import variant from '@styled-system/variant';
 
 const defaults = {
 	fontSizes : [ 0.625, 0.75, 0.875, 1, 1.25, 1.5, 2.125, 3, 3.75, 6 ],
@@ -9,7 +10,7 @@ export const variants = variant({
 	prop  : 'typography',
 });
 
-export default system({
+export const text = system({
 	fontFamily    : {
 		property : 'fontFamily',
 		scale    : 'fonts',
@@ -34,3 +35,5 @@ export default system({
 	textAlign     : true,
 	fontStyle     : true,
 });
+
+export default compose(variants, text);

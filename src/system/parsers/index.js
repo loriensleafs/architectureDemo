@@ -6,5 +6,4 @@ export { default as getFlexItem } from './flexItem';
 export { default as getLayout } from './layout';
 export { default as getPosition } from './position';
 export { default as getSpacing } from './spacing';
-//export { default as getTransitions } from './transitions'
-export { default as getTypography } from './typography';
+export { default as getTypography, text as getText } from './typography';

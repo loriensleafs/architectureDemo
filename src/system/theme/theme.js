@@ -1,5 +1,5 @@
 import defaultTheme from './defaultTheme';
-import { isObj, merge } from '../utils';
+import { isObj, merge } from './../../utils';
 
 let theme = { ...defaultTheme };
 

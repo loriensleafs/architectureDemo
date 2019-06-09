@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { forwardRef, useRef, useContext } from 'react';
-import { ThemeContext } from './../../system';
-import getCSS from './../../system/getCSS';
 import {
+	getCss,
 	getBorders,
 	getColors,
 	getElevation,
@@ -10,7 +9,9 @@ import {
 	getLayout,
 	getPosition,
 	getSpacing,
-} from '../../system/parsers';
+	getTypography,
+	ThemeContext,
+} from '../../system';
 
 /**
  * Base styles parser.
@@ -34,6 +35,7 @@ export const boxCss = getCss(
 	getLayout,
 	getPosition,
 	getSpacing,
+	getTypography,
 );
 
 /**

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { forwardRef, useRef } from 'react';
 import BaseButton from './../ButtonBase';
-import getCSS from './../../system/getCSS';
+import { getCss } from './../../system';
 import { boxCss } from './../Box';
 import { fade } from './../../utils/colorHelpers';
 
@@ -35,25 +35,25 @@ const getVariantStyles = ({ variant }) => {
 	}
 };
 
-const getLightStyles = ({ light, theme: { palette } }) =>
+const getLightStyles = ({ light, theme: { colors } }) =>
 	light && {
-		backgroundColor : fade(palette.divider, 0.08),
+		backgroundColor : fade(colors.divider, 0.08),
 	};
 
-const getStyles = ({ theme: { palette } }) => ({
+const getStyles = ({ theme: { colors } }) => ({
 	height          : '1px',
 	margin          : 0, // Reset browser default style.
 	border          : 'none',
 	flexShrink      : 0,
-	backgroundColor : palette.divider,
+	backgroundColor : colors.divider,
 });
 
 /**
  * Maps props to <Divider> CSS.
  * @private
  */
-const css = getCSS(getStyles, getLightStyles, getVariantStyles);
-css.propTypes = {
+const dividerCss = getCss(getStyles, getLightStyles, getVariantStyles);
+dividerCss.propTypes = {
 	/** Absolutely position the element. */
 	absolute : PropTypes.bool,
 	/** If `true`, the divider will have a lighter color. */
@@ -68,9 +68,11 @@ css.propTypes = {
  * @public
  */
 const Divider = forwardRef((props = {}, ref) => {
-	const { className, props: { as: Component, ...passThru } } = css(props);
+	const { classes, props: { as: Component, ...passThru } } = dividerCss(
+		props,
+	);
 
-	return <Component className={className} ref={ref} {...passThru} />;
+	return <Component className={classes} ref={ref} {...passThru} />;
 });
 
 Divider.displayName = 'Divider';

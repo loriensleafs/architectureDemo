@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { forwardRef, useRef } from 'react';
-import getCSS from './../../system/getCSS';
 import Box from './../Box';
+import { getCss } from './../../system';
 import { fade } from './../../utils/colorHelpers';
 
 const pxToRem = (size = 16) => `${size / 16}rem`;
@@ -9,25 +9,25 @@ const pxToRem = (size = 16) => `${size / 16}rem`;
 const isBrandColor = color =>
 	color && [ 'primary', 'secondary', 'tertiary' ].includes(color);
 
-const getColorStyles = ({ color, disabled, theme: { palette } }) => {
+const getColorStyles = ({ color, disabled, theme: { colors } }) => {
 	if (disabled) {
 		return {
-			color : palette.action.disabled,
+			color : colors.action.disabled,
 		};
 	} else if (color === 'action') {
 		return {
-			color : palette.action.active,
+			color : colors.action.active,
 		};
 	} else if (isBrandColor(color)) {
 		return {
-			color : palette[color].main,
+			color : colors[color].main,
 		};
 	}
-
 	return {
 		color : 'inherit',
 	};
 };
+getColorStyles.propNames = [ 'color', 'disabled' ];
 
 const getSizeStyles = ({ size }) => {
 	switch (size) {
@@ -52,6 +52,7 @@ const getSizeStyles = ({ size }) => {
 			};
 	}
 };
+getSizeStyles.propNames = [ 'fullWidth', 'size' ];
 
 const getStyles = (props = {}) => ({
 	userSelect : 'none',
@@ -66,7 +67,7 @@ const getStyles = (props = {}) => ({
  * Maps props to <svg> CSS.
  * @private
  */
-const css = getCSS(getStyles, getSizeStyles, getColorStyles);
+const svgIconCss = getCss(getStyles, getSizeStyles, getColorStyles);
 
 /**
  * @name <SvgIcon>
@@ -86,7 +87,7 @@ const SvgIcon = forwardRef((props = {}, ref) => {
 			...passThru
 		},
 		styles,
-	} = css(props);
+	} = svgIconCss(props);
 
 	return (
 		<Box

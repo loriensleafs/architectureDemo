@@ -13,6 +13,6 @@ const colors = {
 };
 
 /** Color system shorthand aliases. */
-colors.bg = config.backgroundColor;
+colors.bg = colors.backgroundColor;
 
 export default system(colors);

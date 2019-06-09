@@ -21,8 +21,8 @@ import logoImage from './logo.svg';
  * @public
  */
 const AppBar = (props = {}) => (
-	<Box bg='primary.main' elevation={8} position='sticky' top='0px'>
-		<Container py={3.5}>
+	<Box bg='primary.main' elevation={8} py={3.5} position='sticky' top='0px'>
+		<Container>
 			<Flex justifyContent='center' direction='column'>
 				<Flex justifyContent='space-between'>
 					<Link to='/'>

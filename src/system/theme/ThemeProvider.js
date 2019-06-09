@@ -1,10 +1,10 @@
 import React from 'react';
+import jsx from './../jsx';
 import ThemeContext from './ThemeContext';
 import { setTheme } from './theme';
-import { createStyleEngine } from './styleRenderer';
+import { setStyleRenderer } from './../styleRenderer';
 
-const ThemeProvider = ({ children, theme, styleEngine }) => {
-	createStyleEngine(styleEngine);
+const ThemeProvider = ({ children, theme }) => {
 	return (
 		<ThemeContext.Provider value={{ theme: setTheme(theme) }}>
 			{children}

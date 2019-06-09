@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { forwardRef, useRef } from 'react';
-import getCSS from './../../system/getCSS';
+import { getCss } from './../../system';
 import { boxCss } from './../Box';
 
 const getStyles = () => ({
@@ -49,7 +49,7 @@ const getStyles = () => ({
  * Maps props to <button> CSS.
  * @private
  */
-const css = getCSS(getStyles, boxCss);
+const baseButtonCss = getCss(getStyles, boxCss);
 
 /**
  * @name <ButtonBase>
@@ -78,7 +78,7 @@ const ButtonBase = forwardRef((props, ref) => {
 			type,
 			...passThru
 		},
-	} = css(props);
+	} = baseButtonCss(props);
 	const Component = props.href ? 'a' : ComponentProp;
 
 	const handleBlur = event => onBlur && onBlur(event);

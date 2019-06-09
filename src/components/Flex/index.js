@@ -1,3 +1,1 @@
-export { css as flexCss } from './Flex';
-
-export { default } from './Flex';
+export { default, flexCss } from './Flex';

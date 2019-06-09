@@ -1,21 +1,25 @@
 import React, { forwardRef } from 'react';
 import Box from './../Box';
-import getCSS from './../../system/getCSS';
-import { getFlexbox } from './../../system';
+import { getCss, getFlexbox } from './../../system';
 
 /**
- * Maps props to <Flex> CSS.
- * @public
+ * Base styles parser.
  */
-export const flexboxCss = getCSS(getFlexbox);
+const getStyles = props => ({
+	display : props.inline ? 'inline-flex' : 'flex',
+});
+getStyles.propNames = [ 'inline' ];
 
 /**
- * @name <Flex>
- * @component
- * @public
+ * System UI styles parser.
+ */
+export const flexCss = getCss(getStyles, getFlexbox);
+
+/**
+ * System UI component.
  */
 const Flex = forwardRef((props = {}, ref) => {
-	const { styles, props: { children, ...passThru } } = flexboxCss(props);
+	const { styles, props: { children, ...passThru } } = flexCss(props);
 
 	return (
 		<Box styles={styles} ref={ref} {...passThru}>

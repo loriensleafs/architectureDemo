@@ -16,13 +16,21 @@ import {
  * List of props dependencies a single parser needs to derive dynamic styles.
  */
 const getPropNames = parser =>
-	(isFn(parser) && parser.hasOwnProperty('propNames') && parser.propNames) ||
-	[];
+	isFn(parser) && parser.hasOwnProperty('propNames') ? parser.propNames : [];
 
 /**
  * List of props dependencies parsers need to derive dynamic styles.
  */
-const getStyleProps = (acc, parser) => [ ...acc, ...getPropNames(parser) ];
+const getStyleKeys = (acc, parser) => {
+	const keys = [ ...acc, ...getPropNames(parser) ];
+	return keys;
+};
+
+const getStyleProps = (keys, props) =>
+	keys.reduce(
+		(acc, key) => (props[key] ? { ...acc, [key]: props[key] } : acc),
+		{},
+	);
 
 /**
  * Dynamic styles derived from theme/state.  
@@ -32,13 +40,17 @@ const getStyleProps = (acc, parser) => [ ...acc, ...getPropNames(parser) ];
  *   2. Classes of the style map.
  *   3. Props that were passed sans style props.
  */
-const getCss = (...parsers) => (props, opts) => {
-	const cleanProps = createPropsSanitizer(getStyleProps(parsers));
+const getCss = (...parsers) => (
+	props,
+	opts = [ 'classes', 'props', 'styles' ],
+) => {
+	const styleKeys = parsers.reduce(getStyleKeys, []);
+	const cleanProps = createPropsSanitizer(styleKeys);
 	const getStyles = composeWith(merge, ...parsers);
-	const options = toArr(opts) || [ 'classes', 'props', 'styles' ];
+	const options = toArr(opts);
 	const {
-		className,
-		classes,
+		className = '',
+		classes = '',
 		css = {},
 		styles = {},
 		...currentProps
@@ -56,7 +68,8 @@ const getCss = (...parsers) => (props, opts) => {
      * Map props to styles and get classes. 
      */
 	if (options.includes('classes') || options.includes('styles')) {
-		const nextStyles = merge(getStyles(currentProps), styles, css);
+		const styleProps = { ...getStyleProps(styleKeys, currentProps), theme };
+		const nextStyles = merge(getStyles(styleProps), styles, css);
 
 		if (options.includes('styles')) {
 			next.styles = nextStyles;

@@ -6,8 +6,8 @@ const getSize = (n, scale) =>
 
 const layout = {
 	width         : {
-		properties : 'width',
-		transform  : getSize,
+		property  : 'width',
+		transform : getSize,
 	},
 	height        : {
 		property  : 'height',

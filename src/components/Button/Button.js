@@ -1,24 +1,28 @@
 import PropTypes from 'prop-types';
 import React, { forwardRef, useRef } from 'react';
 import BaseButton from './../ButtonBase';
-import getCSS from './../../system/getCSS';
 import { boxCss } from './../Box';
+import { getCss } from './../../system';
 import { fade } from './../../utils/colorHelpers';
 
 const isBrandColor = color =>
 	color && [ 'primary', 'secondary', 'tertiary' ].includes(color);
 
-const getSelectedStyles = ({ color, selected, theme: { palette }, variant }) =>
+/**
+* <Button> selected API style parser.
+*/
+const getSelectedStyles = ({ color, selected, theme: { colors }, variant }) =>
 	selected && {
 		backgroundColor :
 			variant === 'contained'
-				? palette[color].dark
-				: fade(palette[color].dark, palette.action.hoverOpacity),
+				? colors[color].dark
+				: fade(colors[color].dark, colors.action.hoverOpacity),
 	};
-getSelectedStyles.propTypes = {
-	selected : PropTypes.bool,
-};
+getSelectedStyles.propNames = [ 'selected' ];
 
+/**
+ * <Button> size API style parser.
+ */
 const getSizeStyles = ({ fullWidth, size }) => {
 	switch (size) {
 		case 'small':
@@ -59,15 +63,15 @@ const getSizeStyles = ({ fullWidth, size }) => {
 			);
 	}
 };
-getSizeStyles.propTypes = {
-	fullWidth : PropTypes.bool,
-	size      : PropTypes.bool,
-};
+getSizeStyles.propNames = [ 'fullWidth', 'size' ];
 
+/**
+ * <Button> variant API style parser.
+ */
 const getVariantStyles = ({ color, variant, theme, ...props }) => {
-	const { palette } = theme;
+	const { colors } = theme;
 	const brandColor = isBrandColor(color);
-	const colorCode = brandColor ? palette[color].main : palette.text.primary;
+	const colorCode = brandColor ? colors[color].main : colors.text.primary;
 
 	switch (variant) {
 		case 'outlined':
@@ -78,7 +82,7 @@ const getVariantStyles = ({ color, variant, theme, ...props }) => {
 				':hover'        : {
 					backgroundColor : fade(
 						colorCode,
-						palette.action.hoverOpacity,
+						colors.action.hoverOpacity,
 					),
 				},
 			};
@@ -86,11 +90,11 @@ const getVariantStyles = ({ color, variant, theme, ...props }) => {
 		case 'contained':
 			return {
 				color           : brandColor
-					? palette[color].contrastText
-					: palette.text.primary,
+					? colors[color].contrastText
+					: colors.text.primary,
 				backgroundColor : colorCode,
 				':hover'        : {
-					backgroundColor : palette[color].dark,
+					backgroundColor : colors[color].dark,
 				},
 			};
 
@@ -101,18 +105,17 @@ const getVariantStyles = ({ color, variant, theme, ...props }) => {
 				':hover'        : {
 					backgroundColor : fade(
 						colorCode,
-						palette.action.hoverOpacity,
+						colors.action.hoverOpacity,
 					),
 				},
 			};
 	}
 };
-getVariantStyles.propTypes = {
-	color    : PropTypes.oneOf([ 'primary', 'secondary', 'tertiary' ]),
-	disabled : PropTypes.bool,
-	variant  : PropTypes.oneOf([ 'text', 'outlined', 'contained' ]),
-};
+getVariantStyles.propNames = [ 'color', 'disabled', 'variant' ];
 
+/**
+ * Base <Button> styles parser.
+ */
 const getButtonStyles = ({ theme }) => ({
 	boxSizing    : 'border-box',
 	whiteSpace   : 'nowrap',
@@ -120,10 +123,9 @@ const getButtonStyles = ({ theme }) => ({
 });
 
 /**
- * Maps props to <Button> CSS.
- * @private
+ * <Button> style parsers.
  */
-const buttonCss = getCSS(
+const buttonCss = getCss(
 	getButtonStyles,
 	getVariantStyles,
 	getSizeStyles,
@@ -132,10 +134,9 @@ const buttonCss = getCSS(
 );
 
 /**
- * Maps props to <label> CSS.
- * @private
+ * Base <label> style parser.
  */
-const labelCss = getCSS(() => ({
+const labelCss = getCss(() => ({
 	display        : 'inherit',
 	width          : '100%',
 	alignItems     : 'inherit',
@@ -143,14 +144,12 @@ const labelCss = getCSS(() => ({
 }));
 
 /**
- * @name <Button>
- * @component
- * @public
+ * Styled <Button> component.
  */
 const Button = forwardRef((props = {}, ref) => {
 	ref = ref ? ref : useRef(null);
 	const {
-		props  : { children, ...passThru },
+		props  : { children, color, variant, ...passThru },
 		styles : buttonStyles,
 	} = buttonCss(props);
 

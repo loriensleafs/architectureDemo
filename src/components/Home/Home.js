@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Box from './../Box';
 import Button from './../Button';
 import Flex from './../Flex';
 import Container from './../Container';
-import getCSS from './../../system/getCSS';
+import { getCss } from './../../system';
 import { ChevronRightIcon, PhotoIcon } from './../svgs';
 
 const getCardStyles = (props = {}) => {
@@ -16,10 +16,10 @@ const getCardStyles = (props = {}) => {
 	const next = {};
 
 	if (!disableElevation) {
-		next.boxShadow = theme.elevation[elevation];
+		next.boxShadow = theme.elevations[elevation];
 		if (!disableHover) {
 			next[':hover'] = {
-				boxShadow : theme.elevation[elevation + 2],
+				boxShadow : theme.elevations[elevation + 2],
 			};
 		}
 	}
@@ -27,7 +27,7 @@ const getCardStyles = (props = {}) => {
 	return next;
 };
 
-const cardCss = getCSS(getCardStyles);
+const cardCss = getCss(getCardStyles);
 
 const Card = ({ children, ...props }) => (
 	<Box radius='round' styles={cardCss(props, 'styles')} {...props}>
@@ -83,7 +83,7 @@ const OfferCarousel = (props = {}) => (
  * @public
  */
 const Home = (props = {}) => (
-	<Box>
+	<Fragment>
 		<Container>
 			<Box
 				my={3}
@@ -97,20 +97,19 @@ const Home = (props = {}) => (
 				</Box>
 			</Box>
 		</Container>
-		<Flex
-			bg='grey.main'
-			color='white'
-			typography='h2'
-			h='350px'
-			justifyContent='center'
-			alignItems='center'
-		>
-			CAROUSEL
-		</Flex>
-		<Box mt={3}>
-			<OfferCarousel />
+		<Box bg='grey.main' color='white' typography='h2'>
+			<Container>
+				<Flex h='350px' justifyContent='center' alignItems='center'>
+					CAROUSEL
+				</Flex>
+			</Container>
 		</Box>
-	</Box>
+		<Box mt={3}>
+			<Container>
+				<OfferCarousel />
+			</Container>
+		</Box>
+	</Fragment>
 );
 
 Home.displayName = 'Home';

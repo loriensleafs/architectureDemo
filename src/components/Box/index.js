@@ -1,2 +1,1 @@
-export { css as boxCss } from './Box';
-export { default } from './Box';
+export { default, boxCss } from './Box';

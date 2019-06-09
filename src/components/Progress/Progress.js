@@ -1,12 +1,12 @@
 import React from 'react';
-import getCSS from './../../system/getCSS';
+import { getCss } from './../../system/';
 import { isNum, toPx } from './../../utils';
 
 const COLOR_PROPS = [ 'primary', 'secondary', 'tertiary' ];
 
 const getColorStyles = ({ color = 'primary', theme }) => ({
 	stroke : COLOR_PROPS.includes(color)
-		? theme.palette[color].main
+		? theme.colors[color].main
 		: 'currentColor',
 });
 
@@ -61,13 +61,13 @@ const getCircleStyles = (props = {}) => ({
  * Maps props to <svg> CSS.
  * @private
  */
-const svgCss = getCSS(getSvgStyles, getSizeStyles);
+const svgCss = getCss(getSvgStyles, getSizeStyles);
 
 /**
  * Maps props to <circle> CSS.
  * @private
  */
-const circleCss = getCSS(getCircleStyles, getColorStyles, getThicknessStyles);
+const circleCss = getCss(getCircleStyles, getColorStyles, getThicknessStyles);
 
 /**
  * @name <Progress>
