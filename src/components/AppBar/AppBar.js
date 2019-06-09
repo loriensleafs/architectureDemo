@@ -22,7 +22,7 @@ import logoImage from './logo.svg';
  */
 const AppBar = (props = {}) => (
 	<Box bg='primary.main' elevation={8} position='sticky' top='0px'>
-		<Container py={3}>
+		<Container py={3.5}>
 			<Flex justifyContent='center' direction='column'>
 				<Flex justifyContent='space-between'>
 					<Link to='/'>
@@ -52,16 +52,14 @@ const AppBar = (props = {}) => (
 					</Flex>
 				</Flex>
 				<Flex mt={3.5}>
-					<Flex flex={3} justifyContent='space-between'>
-						<Button color='primary' variant='contained'>
-							<Box
-								as='span'
-								color='inherit'
-								typography='h3'
-								fontWeight='bold'
-							>
-								shop by pet
-							</Box>
+					<Flex flex={3} justifyContent='flex-start'>
+						<Button
+							color='primary'
+							variant='contained'
+							typography='h2'
+							fontWeight='bold'
+						>
+							shop by pet
 							<ChevronDownIcon color='secondary' ml={2} />
 						</Button>
 						<Button

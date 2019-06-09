@@ -20,6 +20,7 @@ export {
 	get,
 	merge,
 	noop,
+	composeWith,
 } from './helpers.js';
 
 export { default as combine } from './combine';

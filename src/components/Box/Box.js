@@ -6,49 +6,41 @@ import {
 	getBorders,
 	getColors,
 	getElevation,
-	getFlex,
-	getOpacity,
-	getPositions,
-	getSizing,
+	getFlexItem,
+	getLayout,
+	getPosition,
 	getSpacing,
-	getText,
-} from './../../system/styles';
+} from '../../system/parsers';
 
 /**
- * Maps props to <Box> CSS.
- * @public
+ * Base styles parser.
  */
-export const css = getCSS(
-	getBorders,
-	getElevation,
-	getFlex,
-	getOpacity,
-	getPositions,
-	getSizing,
-	getSpacing,
-	getText,
-	getColors,
-);
-css.propTypes = {
-	...getBorders.propTypes,
-	...getElevation.propTypes,
-	...getFlex.propTypes,
-	...getOpacity.propTypes,
-	...getPositions.propTypes,
-	...getSizing.propTypes,
-	...getSpacing.propTypes,
-	...getText.propTypes,
-	...getColors.propTypes,
-};
+const getStyles = props => ({
+	boxSizing : 'border-box',
+	minWidth  : '0px',
+	...(props.inline ? { display: 'inline-block' } : null),
+});
+getStyles.propNames = [ 'inline' ];
 
 /**
- * @name <Box>
- * @component
- * @public
+ * System UI styles parser.
+ */
+export const boxCss = getCss(
+	getStyles,
+	getBorders,
+	getColors,
+	getElevation,
+	getFlexItem,
+	getLayout,
+	getPosition,
+	getSpacing,
+);
+
+/**
+ * System UI component.
  */
 const Box = forwardRef((props = {}, ref) => {
-	ref = ref ? ref : useRef(null);
-	const { classes, props: { as: Component, children, ...passThru } } = css(
+	const { classes, props: { as: Component, children, ...passThru } } = boxCss(
 		props,
 	);
 
@@ -62,19 +54,8 @@ const Box = forwardRef((props = {}, ref) => {
 Box.displayName = 'Box';
 
 Box.defaultProps = {
-	as : 'div',
-};
-
-Box.propTypes = {
-	...getBorders.propTypes,
-	...getColors.propTypes,
-	...getElevation.propTypes,
-	...getFlex.propTypes,
-	...getOpacity.propTypes,
-	...getPositions.propTypes,
-	...getSpacing.propTypes,
-	...getSizing.propTypes,
-	...getText.propTypes,
+	as     : 'div',
+	inline : false,
 };
 
 export default Box;

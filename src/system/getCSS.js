@@ -1,101 +1,75 @@
 import theme from './theme';
-import cn from './className';
-import { keys, isArr, isFn, isNil, isObj, merge, toArr } from './../utils';
+import getClasses from './getClasses';
+import createPropsSanitizer from './cleanProps';
+import {
+	composeWith,
+	keys,
+	isArr,
+	isFn,
+	isNil,
+	isObj,
+	merge,
+	toArr,
+} from './../utils';
 
 /**
- * Gets the list of props that need to be parsed/mapped to styles.
- * 
- * @param  {Array} 		acc 	Accumulated style prop keys.
- * @param  {Function} 	reducer Current reducer to get prop deps from.
- * @return {Array} 		Valid style props.
+ * List of props dependencies a single parser needs to derive dynamic styles.
  */
-const getCssProps = (acc, reducer) =>
-	reducer &&
-	(reducer.hasOwnProperty('propTypes') || reducer.hasOwnProperty('propNames'))
-		? [
-				...acc,
-				...(reducer.hasOwnProperty('propTypes')
-					? keys(reducer.propTypes)
-					: reducer.propNames),
-			]
-		: acc;
+const getPropNames = parser =>
+	(isFn(parser) && parser.hasOwnProperty('propNames') && parser.propNames) ||
+	[];
 
 /**
- * Removes all style specific props from component props object.
- * 
- * @param  {type} styleProps {description}
- * @param  {type} props      {description}
- * @return {type} {description}
+ * List of props dependencies parsers need to derive dynamic styles.
  */
-const getNextProps = (styleProps, props) => (acc, prop) => {
-	return !styleProps.includes(prop) ? { ...acc, [prop]: props[prop] } : acc;
-};
+const getStyleProps = (acc, parser) => [ ...acc, ...getPropNames(parser) ];
 
 /**
- * Map the component props to styles.
+ * Dynamic styles derived from theme/state.  
  * 
- * @param  {Object} 	acc     {description}
- * @param  {Function} 	reducer {description}
- * @return {Function} 	{description}
+ * Returns ‣
+ *   1. Style map.
+ *   2. Classes of the style map.
+ *   3. Props that were passed sans style props.
  */
-const getNextStyles = props => (acc, reducer) => {
-	return isFn(reducer)
-		? merge(acc, reducer(props))
-		: isObj(reducer) ? merge(acc, reducer) : acc;
-};
-
-/**
- * Creates a map props to CSS function.  The function takes two
- * arguments.  
- * 
- * @function getCSS
- * @param  {Array}  	reducers Functions that map props to styles.
- * @return {Function} 	The mapPropsToCSS() method.
- *
- * @function mapPropsToCSS
- * @param {Object} 			props Component props.
- * @param {Array|String} 	[include=['className', 'props', 'styles']] What the
- * map props to CSS function should parse/return.
- *
- * 1. 'styles'		‣ Include mapped props to styles.
- * 2. 'props' 		‣ Include props with style specific props removed.
- * 3. 'className'	‣ Include the classes for the parsed styles.
- */
-const getCSS = (...reducers) => (
-	{ className, classes, css = {}, styled, styles = {}, ...props },
-	include = [ 'classes', 'props', 'styles' ],
-) => {
+const getCss = (...parsers) => (props, opts) => {
+	const cleanProps = createPropsSanitizer(getStyleProps(parsers));
+	const getStyles = composeWith(merge, ...parsers);
+	const options = toArr(opts) || [ 'classes', 'props', 'styles' ];
+	const {
+		className,
+		classes,
+		css = {},
+		styles = {},
+		...currentProps
+	} = props;
 	const next = {};
-	const includeNext = toArr(include);
-	const includeNextClasses = includeNext.includes('classes');
-	const includeNextProps = includeNext.includes('props');
-	const includeNextStyles = includeNext.includes('styles');
-	const cssProps = reducers.reduce(getCssProps, []);
 
-	if (includeNextProps) {
-		next.props = keys(props).reduce(getNextProps(cssProps, props), {});
+	/** 
+     * Remove all style props. 
+     */
+	if (options.includes('props')) {
+		next.props = cleanProps(currentProps);
 	}
 
-	if (includeNextStyles || includeNextClasses) {
-		const nextStyles = merge(
-			reducers.reduce(getNextStyles({ ...props, theme }), {}),
-			styles,
-			css,
-		);
-		const nextClasses = isObj(nextStyles) ? cn(nextStyles) : '';
+	/** 
+     * Map props to styles and get classes. 
+     */
+	if (options.includes('classes') || options.includes('styles')) {
+		const nextStyles = merge(getStyles(currentProps), styles, css);
 
-		if (includeNextStyles) {
+		if (options.includes('styles')) {
 			next.styles = nextStyles;
 		}
 
-		if (includeNextClasses) {
-			next.classes = `${nextClasses}${classes
-				? ` ${classes}`
-				: ''}${className ? ` ${className}` : ''}`;
+		if (options.includes('classes')) {
+			next.classes = isObj(nextStyles)
+				? getClasses(nextStyles, classes, className)
+				: '';
 		}
 	}
 
-	return includeNext.length === 1 ? next[include] : next;
+	return options.length === 1 ? next[options[0]] : next;
 };
 
-export default getCSS;
+export default getCss;

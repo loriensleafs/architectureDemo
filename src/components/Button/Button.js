@@ -24,12 +24,11 @@ const getSizeStyles = ({ fullWidth, size }) => {
 		case 'small':
 			return boxCss(
 				{
-					w          : fullWidth ? 1 : null,
-					wMin       : '64px',
-					hMin       : '31px',
-					py         : 1,
-					px         : 2,
-					typography : 'button',
+					w    : fullWidth ? 1 : null,
+					wMin : '64px',
+					hMin : '31px',
+					py   : 1,
+					px   : 2,
 				},
 				'styles',
 			);
@@ -129,6 +128,7 @@ const buttonCss = getCSS(
 	getVariantStyles,
 	getSizeStyles,
 	getSelectedStyles,
+	boxCss,
 );
 
 /**

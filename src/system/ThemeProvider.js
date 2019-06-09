@@ -1,10 +1,15 @@
 import React from 'react';
-import defaultTheme from './theme';
 import ThemeContext from './ThemeContext';
-import { merge } from './../utils';
+import { setTheme } from './theme';
+import { createStyleEngine } from './styleRenderer';
 
-const ThemeProvider = ({ children, theme = {} }) => (
-	<ThemeContext.Provider value={{}}>{children}</ThemeContext.Provider>
-);
+const ThemeProvider = ({ children, theme, styleEngine }) => {
+	createStyleEngine(styleEngine);
+	return (
+		<ThemeContext.Provider value={{ theme: setTheme(theme) }}>
+			{children}
+		</ThemeContext.Provider>
+	);
+};
 
 export default ThemeProvider;

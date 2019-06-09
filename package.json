@@ -25,11 +25,7 @@
 		"test": "node scripts/test.js"
 	},
 	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
+		"production": [ ">0.2%", "not dead", "not op_mini all" ],
 		"development": [
 			"last 1 chrome version",
 			"last 1 firefox version",
@@ -37,13 +33,8 @@
 		]
 	},
 	"jest": {
-		"collectCoverageFrom": [
-			"src/**/*.{js,jsx,ts,tsx}",
-			"!src/**/*.d.ts"
-		],
-		"setupFiles": [
-			"react-app-polyfill/jsdom"
-		],
+		"collectCoverageFrom": [ "src/**/*.{js,jsx,ts,tsx}", "!src/**/*.d.ts" ],
+		"setupFiles": [ "react-app-polyfill/jsdom" ],
 		"setupFilesAfterEnv": [],
 		"testMatch": [
 			"<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
@@ -90,12 +81,10 @@
 				}
 			]
 		],
-		"presets": [
-			"react-app"
-		]
+		"presets": [ "react-app" ]
 	},
 	"devDependencies": {
-		"@babel/core": "^7.4.3",
+		"@babel/core": "^7.4.5",
 		"@babel/plugin-syntax-dynamic-import": "^7.2.0",
 		"@babel/plugin-transform-react-jsx": "^7.3.0",
 		"@svgr/webpack": "^4.3.0",
@@ -149,11 +138,11 @@
 		"semver": "^6.1.1",
 		"style-loader": "^0.23.1",
 		"terser-webpack-plugin": "^1.3.0",
-		"ts-pnp": "1.1.2",
+		"ts-pnp": "^1.1.2",
 		"url-loader": "^2.0.0",
-		"webpack": "4.29.6",
-		"webpack-dev-server": "3.2.1",
-		"webpack-manifest-plugin": "2.0.4",
-		"workbox-webpack-plugin": "4.2.0"
+		"webpack": "^4.33.0",
+		"webpack-dev-server": "^3.7.1",
+		"webpack-manifest-plugin": "^2.0.4",
+		"workbox-webpack-plugin": "^4.3.1"
 	}
 }

@@ -13,7 +13,7 @@ import {
 	getSpacing,
 	getText,
 } from './styles';
-import { isObj, isStr } from './../utils';
+import { get, isObj, isStr } from './../utils';
 
 const css = getCSS(
 	getBorders,
@@ -39,7 +39,10 @@ css.propTypes = {
 };
 
 export default (type, props, ...children) => {
-	if (isObj(props.css)) {
+	const cssProp = get(props, 'css');
+	const styledProp = get(props, 'styled');
+
+	if (isObj(cssProp)) {
 		const { css: cssProp, classes, ...passThru } = props;
 		const next = css({ ...props.css, className: props.className }, [
 			'classes',
@@ -49,7 +52,7 @@ export default (type, props, ...children) => {
 		props = { ...passThru, className: next.classes };
 	}
 
-	if (props.styled) {
+	if (styledProp) {
 		const next = css(props);
 		props = { ...next.props, className: next.classes };
 	}
