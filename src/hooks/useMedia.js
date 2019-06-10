@@ -6,9 +6,14 @@ const { aliases, breakpoints } = theme;
 const getBps = bps => [ 0, ...bps ].map(bp => `(min-width: ${bp}px)`);
 
 const getQuery = (queries, query) => {
+	const idx = queries.indexOf(query.media);
 	const alias = aliases[queries.indexOf(query.media)];
 	const next = { [alias]: query.matches };
-	if (query.matches) next.active = alias;
+	if (query.matches) {
+		next.active = alias;
+	} else if (idx !== 0 && matchMedia(queries[idx - 1]).matches) {
+		next.active = aliases[idx - 1];
+	}
 	return next;
 };
 
