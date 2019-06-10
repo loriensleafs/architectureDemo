@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { theme } from './../system';
 
-const { alias, breakpoints } = theme;
+const { aliases, breakpoints } = theme;
 
 const getBps = bps => [ 0, ...bps ].map(bp => `(min-width: ${bp}px)`);
 
