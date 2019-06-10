@@ -69,8 +69,17 @@ const AppBar = (props = {}) => {
 					<Flex mt={3.5}>
 						<Flex flex={3} justifyContent='flex-start'>
 							<NavigationButton>
-								<Text fontWeight='bold' typography='h2'>
+								<Text
+									color='white'
+									fontWeight='bold'
+									typography='h2'
+									m={1}
+								>
 									shop by pet
+									<ChevronDownIcon
+										color='secondary'
+										ml={2.5}
+									/>
 								</Text>
 							</NavigationButton>
 							<NavigationButton to='/account'>

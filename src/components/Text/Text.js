@@ -1,13 +1,13 @@
 import React, { forwardRef } from 'react';
 import Box from './../Box';
-import { getCss, getTypography } from './../../system';
+import { getCss, getColors, getTypography } from './../../system';
 
 const isHeader = variant => variant.substring(0, 1).toLowerCase() === 'h';
 
 /**
  * System UI styles parser.
  */
-export const textCss = getCss(getTypography);
+export const textCss = getCss(getTypography, getColors);
 
 /**
  * System UI component.
