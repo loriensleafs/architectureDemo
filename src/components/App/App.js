@@ -9,7 +9,6 @@ import Progress from './../Progress';
 import { ThemeProvider } from './../../system';
 import logo from './logo.svg';
 import './App.css';
-import ErrorBoundary from './../../ErrorBoundary';
 
 /**
  * Components that are lozy loaded.
@@ -35,23 +34,21 @@ const Loading = () => (
  * @public
  */
 const App = (props = {}) => (
-	<ErrorBoundary>
-		<ThemeProvider theme={{}}>
-			<Flex direction='column' h={1} hMin='100vh' position='relative'>
-				<AppBar />
-				<Box flex={1} hMin='500px'>
-					<Suspense fallback={<Loading />}>
-						<Router>
-							<Home path='/' />
-							<Cart path='/cart' />
-							<Account path='/account' />
-						</Router>
-					</Suspense>
-				</Box>
-				<Footer />
-			</Flex>
-		</ThemeProvider>
-	</ErrorBoundary>
+	<ThemeProvider theme={{}}>
+		<Flex direction='column' h={1} hMin='100vh' position='relative'>
+			<AppBar />
+			<Box flex={1} hMin='500px'>
+				<Suspense fallback={<Loading />}>
+					<Router>
+						<Home path='/' />
+						<Cart path='/cart' />
+						<Account path='/account' />
+					</Router>
+				</Suspense>
+			</Box>
+			<Footer />
+		</Flex>
+	</ThemeProvider>
 );
 
 App.displayName = 'App';
