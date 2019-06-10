@@ -1,4 +1,5 @@
 export default {
+	aliases        : [ 'xs', 'sm', 'md', 'lg', 'xl', 'xxl' ],
 	breakpoints    : [ 480, 765, 960, 1200, 1600 ],
 	colors         : {
 		common    : { white: '#ffffff', black: '#000000' },
